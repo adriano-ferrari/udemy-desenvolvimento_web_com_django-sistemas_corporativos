@@ -17,14 +17,14 @@ from corsheaders.defaults import default_headers
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
-STATIC_DIR=os.path.join(BASE_DIR,'static')
+TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
 
 # Adicionar essa tag para que nosso projeto encontre o .env
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 # Diz para Django onde estão nossos aplicativos
-APPS_DIR = str(os.path.join(BASE_DIR,'apps'))
+APPS_DIR = str(os.path.join(BASE_DIR, 'apps'))
 sys.path.insert(0, APPS_DIR)
 
 
@@ -71,9 +71,11 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
-THIRD_APPS = []
-PROJECT_APPS = [
+THIRD_APPS = [
     "corsheaders",
+]
+PROJECT_APPS = [
+    'apps.base',
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_APPS + PROJECT_APPS
 
