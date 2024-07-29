@@ -65,6 +65,7 @@ if not DEBUG:
 # Application definition
 
 DJANGO_APPS = [
+    'apps.contas',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -78,7 +79,6 @@ THIRD_APPS = [
 PROJECT_APPS = [
     'apps.base',
     'apps.pages',
-    'apps.contas',
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_APPS + PROJECT_APPS
 
@@ -230,10 +230,11 @@ SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
 # Messages
 MESSAGE_TAGS = {
-	constants.ERROR: 'alert-danger',
-	constants.WARNING: 'alert-warning',
-	constants.DEBUG: 'alert-danger',
-	constants.SUCCESS: 'alert-success',
-	constants.INFO: 'alert-info',
+    constants.ERROR: 'alert-danger',
+    constants.WARNING: 'alert-warning',
+    constants.DEBUG: 'alert-danger',
+    constants.SUCCESS: 'alert-success',
+    constants.INFO: 'alert-info',
 }
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
