@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import Group, User
+from django.contrib.auth import logout
 
 from .forms import CustomUserCreationForm
 
@@ -47,3 +48,8 @@ def register_view(request):
                 1 caractere especial e no minimo 8 caracteres.')
     form = CustomUserCreationForm()
     return render(request, "registration/register.html", {"form": form})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
