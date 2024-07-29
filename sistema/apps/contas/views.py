@@ -1,10 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import Group, User
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, UserChangeForm
+from .models import MyUser
 
 
 def timeout_view(request):
@@ -53,3 +55,30 @@ def register_view(request):
 def logout_view(request):
     logout(request)
     return redirect('home')
+
+
+@login_required()
+def atualizar_meu_usuario(request):
+    if request.method == 'POST':
+        form = UserChangeForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Seu perfil foi atualizado com sucesso!')
+            return redirect('home')
+    else:
+        form = UserChangeForm(instance=request.user)
+    return render(request, 'user_update.html', {'form': form})
+
+
+@login_required()
+def atualizar_usuario(request, user_id):
+    user = get_object_or_404(MyUser, pk=user_id)
+    if request.method == 'POST':
+        form = UserChangeForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'O perfil de usuário foi atualizado com sucesso!')
+            return redirect('home')
+    else:
+        form = UserChangeForm(instance=user)
+    return render(request, 'user_update.html', {'form': form})
