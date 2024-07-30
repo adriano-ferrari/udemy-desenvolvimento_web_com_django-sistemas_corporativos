@@ -67,7 +67,7 @@ def atualizar_meu_usuario(request):
             messages.success(request, 'Seu perfil foi atualizado com sucesso!')
             return redirect('home')
     else:
-        form = UserChangeForm(request.POST, instance=user, user=request.user)
+        form = UserChangeForm(instance=request.user, user=request.user)
     return render(request, 'user_update.html', {'form': form})
 
 
@@ -75,7 +75,6 @@ def atualizar_meu_usuario(request):
 @grupo_colaborador_required(['administrador','colaborador'])
 def atualizar_usuario(request, user_id):
     user = get_object_or_404(MyUser, pk=user_id)
-
     if request.method == 'POST':
         form = UserChangeForm(request.POST, instance=user, user=request.user)
         if form.is_valid():
@@ -83,5 +82,6 @@ def atualizar_usuario(request, user_id):
             messages.success(request, 'O perfil de usuário foi atualizado com sucesso!')
             return redirect('home')
     else:
-        form = UserChangeForm(request.POST, instance=user, user=request.user)
+        form = UserChangeForm(instance=user, user=request.user)
     return render(request, 'user_update.html', {'form': form})
+

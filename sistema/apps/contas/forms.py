@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
+
 from .models import MyUser
 
 
@@ -20,10 +21,10 @@ class CustomUserCreationForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super(CustomUserCreationForm, self).__init__(*args, **kwargs)
-        self.user = kwargs.pop('user', None) # get the 'user' from kwargs dictionary
+        self.user = kwargs.pop('user', None)  # get the 'user' from kwargs dictionary
         # super(UserChangeForm, self).__init__(*args, **kwargs)
 
-        if not self.user.groups.filter(name__in=['administrador','colaborador']).exists():
+        if not self.user.groups.filter(name__in=['administrador', 'colaborador']).exists():
             for group in ['is_active']:
                 del self.fields[group]
 
@@ -53,7 +54,7 @@ class CustomUserCreationForm(UserCreationForm):
 class UserChangeForm(forms.ModelForm):
     class Meta:
         model = MyUser
-        fields = ['email', 'first_name', 'last_name','is_active']
+        fields = ['email', 'first_name', 'last_name', 'is_active']
         help_texts = {'username': None}
         labels = {
             'email': 'Email', 
@@ -75,3 +76,4 @@ class UserChangeForm(forms.ModelForm):
                 field.widget.attrs['class'] = 'form-check-input'
             else:
                 field.widget.attrs['class'] = 'form-control'
+
