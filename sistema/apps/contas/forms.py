@@ -49,7 +49,6 @@ class CustomUserCreationForm(UserCreationForm):
         if commit:
             user.save()
         return user
-<<<<<<< HEAD
     
     
 class UserChangeForm(forms.ModelForm):
@@ -77,6 +76,3 @@ class UserChangeForm(forms.ModelForm):
                 field.widget.attrs['class'] = 'form-check-input'
             else:
                 field.widget.attrs['class'] = 'form-control'
-
-=======
->>>>>>> parent of 15f23f1 (Seção 5 | 38.13 -Rota de Atualizar Usuário)

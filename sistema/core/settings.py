@@ -74,7 +74,7 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
 ]
 THIRD_APPS = [
-    "corsheaders",
+    'corsheaders',
 ]
 PROJECT_APPS = [
     'apps.base',
