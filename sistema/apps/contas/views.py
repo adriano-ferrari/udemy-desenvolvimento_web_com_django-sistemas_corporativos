@@ -5,6 +5,8 @@ from django.contrib.auth.models import Group, User
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 
+from apps.perfil.models import Perfil
+
 from .forms import CustomUserCreationForm, UserChangeForm
 from .models import MyUser
 from .permissions import grupo_colaborador_required
@@ -39,6 +41,8 @@ def register_view(request):
             usuario = form.save(commit=False)
             usuario.is_valid = False
             usuario.save()
+            
+            Perfil.objects.create(usuario=usuario) # Cria instancia perfil do usuário
 
             group = Group.objects.get(name='usuario')
             usuario.groups.add(group)
