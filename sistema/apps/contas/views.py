@@ -1,15 +1,18 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import Group, User
 from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
 
+<<<<<<< HEAD
 from apps.perfil.models import Perfil
 
 from .forms import CustomUserCreationForm, UserChangeForm
 from .models import MyUser
 from .permissions import grupo_colaborador_required
+=======
+from .forms import CustomUserCreationForm
+>>>>>>> parent of 15f23f1 (Seção 5 | 38.13 -Rota de Atualizar Usuário)
 
 
 def timeout_view(request):
@@ -60,6 +63,7 @@ def register_view(request):
 def logout_view(request):
     logout(request)
     return redirect('home')
+<<<<<<< HEAD
 
 
 @login_required()
@@ -89,3 +93,5 @@ def atualizar_usuario(request, user_id):
         form = UserChangeForm(instance=user, user=request.user)
     return render(request, 'user_update.html', {'form': form})
 
+=======
+>>>>>>> parent of 15f23f1 (Seção 5 | 38.13 -Rota de Atualizar Usuário)
