@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .import models 
+from perfil.models import Perfil
 
-# Register your models here.
-admin.site.register(models.Perfil)
+
+admin.site.register(Perfil)
