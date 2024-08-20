@@ -3,6 +3,7 @@ from django.contrib import messages
 
 groups = ['administrador', 'colaborador']
 
+
 def grupo_colaborador_required(groups):
     def decorator(view_func):
         def wrapper(request, *args, **kwargs):

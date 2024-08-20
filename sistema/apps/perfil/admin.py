@@ -4,3 +4,4 @@ from perfil.models import Perfil
 
 
 admin.site.register(Perfil)
+

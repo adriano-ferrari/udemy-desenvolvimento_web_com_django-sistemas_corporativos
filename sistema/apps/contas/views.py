@@ -5,11 +5,10 @@ from django.contrib.auth.models import Group, User
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 
-# from apps.perfil.models import Perfil
-
-from .forms import CustomUserCreationForm, UserChangeForm
-from .models import MyUser
-from .permissions import grupo_colaborador_required
+from contas.forms import CustomUserCreationForm, UserChangeForm
+from contas.models import MyUser
+from contas.permissions import grupo_colaborador_required
+from perfil.models import Perfil
 
 
 def timeout_view(request):
@@ -41,11 +40,11 @@ def register_view(request):
             usuario = form.save(commit=False)
             usuario.is_valid = False
             usuario.save()
-            
-            # Perfil.objects.create(usuario=usuario) # Cria instancia perfil do usuário
 
             group = Group.objects.get(name='usuario')
             usuario.groups.add(group)
+            
+            Perfil.objects.create(usuario=usuario) # Cria instancia perfil do usuário
             
             messages.success(request, 'Registrado. Agora faça o login para começar!')
             return redirect('login')
@@ -54,7 +53,7 @@ def register_view(request):
             messages.error(request, 'A senha deve ter pelo menos 1 caractere maiúsculo, \
                 1 caractere especial e no minimo 8 caracteres.')
     form = CustomUserCreationForm()
-    return render(request, "registration/register.html", {"form": form})
+    return render(request, 'registration/register.html', {'form': form})
 
 
 def logout_view(request):
