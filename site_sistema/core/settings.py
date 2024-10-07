@@ -76,7 +76,7 @@ THIRD_APPS = [
 ]
 PROJECT_APPS = [
     'apps.base',
-    #'apps.myapp',
+    'apps.pages',
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_APPS + PROJECT_APPS
 
