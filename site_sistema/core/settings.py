@@ -14,6 +14,7 @@ import os
 import sys
 from dotenv import load_dotenv
 from corsheaders.defaults import default_headers
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
@@ -72,10 +73,9 @@ DJANGO_APPS = [
 ]
 THIRD_APPS = [
     'corsheaders',
-    ...
 ]
 PROJECT_APPS = [
-    #'apps.base',
+    'apps.base',
     #'apps.myapp',
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_APPS + PROJECT_APPS
