@@ -85,13 +85,14 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_APPS + PROJECT_APPS
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    'django_session_timeout.middleware.SessionTimeoutMiddleware',  # Timeout
+    'corsheaders.middleware.CorsMiddleware',  # Cors
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'requestlogs.middleware.RequestLogsMiddleware', # LOGS
+    'requestlogs.middleware.RequestLogsMiddleware',  # LOGS
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -184,6 +185,17 @@ REQUESTLOGS = {
     'SECRETS': ['password', 'token'],
     'METHODS': ('PUT', 'PATCH', 'POST', 'DELETE'),
 }
+
+# timeout tempo de inatividate no sistema
+#SESSION_EXPIRE_SECONDS = 10  # 30 minuts
+#SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
+#SESSION_EXPIRE_AFTER_LAST_ACTIVITY_GRACE_PERIOD = 60
+#SESSION_TIMEOUT_REDIRECT = 'http://localhost:8000/contas/timeout/'
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
