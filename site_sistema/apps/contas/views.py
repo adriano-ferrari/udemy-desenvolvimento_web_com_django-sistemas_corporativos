@@ -2,12 +2,18 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import Group, User
+from django.contrib.auth import logout
 
 from .forms import CustomUserCreationForm
 
 # Rota Timeout (desconecta por inatividade)
 def timeout_view(request):
     return render(request, 'contas/timeout.html')
+
+# Logout
+def logout_view(request):
+    logout(request)
+    return redirect('home')
 
 # Login
 def login_view(request):
