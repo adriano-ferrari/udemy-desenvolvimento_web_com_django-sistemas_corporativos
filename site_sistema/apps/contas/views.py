@@ -8,7 +8,7 @@ from .forms import CustomUserCreationForm
 
 # Rota Timeout (desconecta por inatividade)
 def timeout_view(request):
-    return render(request, 'templates/timeout.html')
+    return render(request, 'contas/timeout.html')
 
 # Logout
 def logout_view(request):
@@ -52,4 +52,4 @@ def register_view(request):
             messages.error(request, 'A senha deve ter pelo menos 1 caractere maiúsculo, \
                 1 caractere especial e no minimo 8 caracteres.')
     form = CustomUserCreationForm()
-    return render(request, "templates/register.html", {"form": form})
+    return render(request, "contas/register.html", {"form": form})
