@@ -3,7 +3,7 @@ from django.contrib import messages
 
 # Create your views here.
 def index(request):
-    context = {
-        'mensagem': messages.success(request, 'Esta é uma mensagem de sucesso!')
-    }
+    #context = {
+    #    'mensagem': messages.success(request, 'Esta é uma mensagem de sucesso!')
+    #}
     return render(request, 'pages/index.html')

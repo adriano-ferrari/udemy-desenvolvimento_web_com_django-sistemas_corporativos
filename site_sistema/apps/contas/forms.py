@@ -47,7 +47,7 @@ class UserChangeForm(forms.ModelForm):
     class Meta:
         model = MyUser
         fields = ['email', 'first_name', 'last_name', 'is_active']
-        help_texts = {'username': None}
+        # help_texts = {'username': None}
         labels = {
             'email': 'Email',
             'first_name': 'Nome',
@@ -56,7 +56,13 @@ class UserChangeForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None) # get the 'user' from kwargs dictionary
         super().__init__(*args, **kwargs)
+
+        if not self.user.groups.filter(name__in=['administrador', 'colaborador']).exists():
+            for group in ['is_active']:
+                del self.fields[group]
+
         for field_name, field in self.fields.items():
             if field.widget.__class__ in [forms.CheckboxInput, forms.RadioSelect]:
                 field.widget.attrs['class'] = 'form-check-input'
