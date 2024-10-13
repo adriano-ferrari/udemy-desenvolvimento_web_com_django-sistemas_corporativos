@@ -17,10 +17,12 @@ from .permissions import grupo_colaborador_required
 def timeout_view(request):
     return render(request, 'contas/timeout.html')
 
+
 # Logout
 def logout_view(request):
     logout(request)
     return redirect('home')
+
 
 # Login
 def login_view(request):
@@ -37,6 +39,7 @@ def login_view(request):
     if request.user.is_authenticated:
         return redirect('home')
     return render(request, 'contas/login.html')
+
 
 # Registrar
 def register_view(request):
@@ -62,11 +65,8 @@ def register_view(request):
     form = CustomUserCreationForm()
     return render(request, "contas/register.html", {"form": form})
 
-
 @login_required()
 def atualizar_meu_usuario(request):
-    print(request.user)
-    print(request.POST)
     if request.method == 'POST':
         form = UserChangeForm(request.POST, instance=request.user, user=request.user)
         if form.is_valid():
@@ -91,3 +91,10 @@ def atualizar_usuario(request, username):
    else:
        form = UserChangeForm(instance=user, user=request.user)
    return render(request, 'contas/user_update.html', {'form': form})
+
+
+@login_required
+@grupo_colaborador_required(['administrador','colaborador'])
+def lista_usuarios(request): # Lista Cliente 
+    lista_usuarios = MyUser.objects.select_related('perfil').filter(is_superuser=False) 
+    return render(request, 'contas/lista-usuarios.html', {'lista_usuarios': lista_usuarios})
