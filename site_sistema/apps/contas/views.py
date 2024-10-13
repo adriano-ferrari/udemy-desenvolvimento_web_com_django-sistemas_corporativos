@@ -47,7 +47,7 @@ def register_view(request):
     if request.user.is_authenticated:
         return redirect('home')
     if request.method == "POST":
-        form = CustomUserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST, user=request.user)
         if form.is_valid():
             usuario = form.save(commit=False)
             usuario.is_valid = False
@@ -63,7 +63,7 @@ def register_view(request):
             # Tratar quando usuario já existe, senhas... etc...
             messages.error(request, 'A senha deve ter pelo menos 1 caractere maiúsculo, \
                 1 caractere especial e no minimo 8 caracteres.')
-    form = CustomUserCreationForm()
+    form = CustomUserCreationForm(user=request.user)
     return render(request, "contas/register.html", {"form": form})
 
 @login_required()
@@ -104,11 +104,11 @@ def lista_usuarios(request): # Lista Cliente
 @login_required
 @grupo_colaborador_required(['administrador','colaborador'])
 def adicionar_usuario(request):
-    user_form = CustomUserCreationForm()
-    perfil_form = PerfilForm()
+    user_form = CustomUserCreationForm(user=request.user)
+    perfil_form = PerfilForm(user=request.user)
 
     if request.method == 'POST':
-        user_form = CustomUserCreationForm(request.POST)
+        user_form = CustomUserCreationForm(request.POST, user=request.user)
         perfil_form = PerfilForm(request.POST, request.FILES)
 
         if user_form.is_valid() and perfil_form.is_valid():

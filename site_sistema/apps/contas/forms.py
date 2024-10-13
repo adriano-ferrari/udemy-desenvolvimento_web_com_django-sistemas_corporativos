@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from .models import MyUser
 
 
-class CustomUserCreationForm(UserCreationForm):
+class CustomUserCreationForm(forms.ModelForm):
     password1 = forms.CharField(label="Senha", widget=forms.PasswordInput)
     password2 = forms.CharField(label="Confirmação de Senha", widget=forms.PasswordInput)
 
@@ -19,7 +19,12 @@ class CustomUserCreationForm(UserCreationForm):
         }
 
     def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
         super(CustomUserCreationForm, self).__init__(*args, **kwargs)
+        if self.user.is_authenticated:
+            del self.fields['password1']
+            del self.fields['password2']
+
         for field_name, field in self.fields.items():
             if field.widget.__class__ in [forms.CheckboxInput, forms.RadioSelect]:
                 field.widget.attrs['class'] = 'form-check-input'
@@ -37,7 +42,11 @@ class CustomUserCreationForm(UserCreationForm):
     def save(self, commit=True):
         # Save the provided password in hashed format
         user = super().save(commit=False)
-        user.set_password(self.cleaned_data["password1"])
+        if self.user.is_authenticated:
+            user.set_password('123') # Senha padrão 123 para todos usuarios adicionados
+            user.force_change_password = True # força mudança de senha quando logar.
+        else:
+            user.set_password(self.cleaned_data["password1"])
         if commit:
             user.save()
         return user
