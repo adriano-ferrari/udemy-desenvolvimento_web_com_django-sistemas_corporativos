@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.core.mail import send_mail
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
@@ -66,7 +68,7 @@ def login_view(request):
             else:
                 return redirect('home')
         else:
-            messages.error(request, 'Email ou senha inválidos')
+            messages.error(request, 'Se o erro persistir entre em contato com o administrador do sistema')
     if request.user.is_authenticated:
         return redirect('home')
     return render(request, 'contas/login.html')
@@ -81,14 +83,30 @@ def register_view(request):
         if form.is_valid():
             usuario = form.save(commit=False)
             usuario.is_valid = False
+            usuario.is_active = False # Adiciona isso.
             usuario.save()
 
             group = Group.objects.get(name='usuario')
             usuario.groups.add(group)
-            Perfil.objects.create(usuario=usuario) # Cria instancia perfil do usuário
 
-            messages.success(request, 'Registrado. Agora faça o login para começar!')
+            Perfil.objects.create(usuario=usuario) # Cria instancia perfil do usuário
+            
+            # Envia e-mail para usuário
+            send_mail( # Envia email para usuario
+                'Cadastro Plataforma',
+                f'Olá, {usuario.first_name}! Em breve você receberá um e-mail \
+                de aprovação para usar a plataforma.',
+                settings.DEFAULT_FROM_EMAIL, # De (em produção usar o e-mail que está no settings)
+                [usuario.email], # para usuario
+                fail_silently=False,
+            )
+            messages.success(request, 'Registrado. Um e-mail foi enviado \
+                para o administrador aprovar o seu acesso. Aguarde o contato.')
             return redirect('login')
+
+            # messages.success(request, 'Registrado. Agora faça o login para começar!')
+            # return redirect('login')
+
         else:
             # Tratar quando usuario já existe, senhas... etc...
             messages.error(request, 'A senha deve ter pelo menos 1 caractere maiúsculo, \
@@ -103,6 +121,7 @@ def atualizar_meu_usuario(request):
         form = UserChangeForm(request.POST, instance=request.user, user=request.user)
         if form.is_valid():
             form.save()
+
             messages.success(request, 'O seu perfil foi atualizado com sucesso!')
             return redirect('home')
     else:
@@ -117,7 +136,24 @@ def atualizar_usuario(request, username):
    if request.method == 'POST':
        form = UserChangeForm(request.POST, instance=user, user=request.user)
        if form.is_valid():
-           form.save()
+           usuario = form.save()
+           
+           if user.is_active: ## se usuario for ativado a gente muda o status para True e envia e-mail
+               usuario.is_active = True # muda status para True (Aprovado)
+               print(usuario.is_active)
+               # Envia e-mail avisando usuário.
+               send_mail( # Envia email para usuario
+                    'Cadastro Aprovado',
+                    f'Olá, {usuario.first_name}! O seu cadastro foi aprovado na plataforma.',
+                    settings.DEFAULT_FROM_EMAIL, # De (em produção usar o e-mail que está no settings)
+                    [usuario.email], # para
+                    fail_silently=False,
+                )
+               messages.success(request, 'O usuário '+ usuario.email +'\
+                    foi atualizado com sucesso!')
+               return redirect('lista_usuarios')
+            
+           usuario.save()
            messages.success(request, 'O perfil do usuário foi atualizado com sucesso!')
            return redirect('home')
    else:
