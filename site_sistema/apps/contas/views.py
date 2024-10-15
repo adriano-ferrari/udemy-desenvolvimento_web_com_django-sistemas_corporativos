@@ -11,6 +11,7 @@ from django.shortcuts import get_object_or_404
 
 from perfil.models import Perfil
 from perfil.forms import PerfilForm
+from base.utils import add_form_errors_to_messages
 
 from .models import MyUser
 from .forms import CustomUserCreationForm, UserChangeForm
@@ -68,7 +69,8 @@ def login_view(request):
             else:
                 return redirect('home')
         else:
-            messages.error(request, 'Se o erro persistir entre em contato com o administrador do sistema')
+            messages.error(request, 'Combinação de e-mail e senha inválida. \
+                           Se o erro persistir, entre em contato com o administrador do sistema')
     if request.user.is_authenticated:
         return redirect('home')
     return render(request, 'contas/login.html')
@@ -103,14 +105,13 @@ def register_view(request):
             messages.success(request, 'Registrado. Um e-mail foi enviado \
                 para o administrador aprovar o seu acesso. Aguarde o contato.')
             return redirect('login')
-
             # messages.success(request, 'Registrado. Agora faça o login para começar!')
             # return redirect('login')
-
         else:
             # Tratar quando usuario já existe, senhas... etc...
-            messages.error(request, 'A senha deve ter pelo menos 1 caractere maiúsculo, \
-                1 caractere especial e no minimo 8 caracteres.')
+            #messages.error(request, 'A senha deve ter pelo menos 1 caractere maiúsculo, \
+            #    1 caractere especial e no minimo 8 caracteres.')
+            add_form_errors_to_messages(request, form)            
     form = CustomUserCreationForm(user=request.user)
     return render(request, "contas/register.html", {"form": form})
 
@@ -121,9 +122,10 @@ def atualizar_meu_usuario(request):
         form = UserChangeForm(request.POST, instance=request.user, user=request.user)
         if form.is_valid():
             form.save()
-
             messages.success(request, 'O seu perfil foi atualizado com sucesso!')
             return redirect('home')
+        else:
+            add_form_errors_to_messages(request, form)
     else:
        form = UserChangeForm(instance=request.user, user=request.user)
     return render(request, 'contas/user_update.html', {'form': form})
@@ -156,6 +158,8 @@ def atualizar_usuario(request, username):
            usuario.save()
            messages.success(request, 'O perfil do usuário foi atualizado com sucesso!')
            return redirect('home')
+       else:
+           add_form_errors_to_messages(request, form)
    else:
        form = UserChangeForm(instance=user, user=request.user)
    return render(request, 'contas/user_update.html', {'form': form})
@@ -193,13 +197,18 @@ def adicionar_usuario(request):
             messages.success(request, 'Usuário adicionado com sucesso.')
             return redirect('lista_usuarios')
         else:
+            # Adicionar mensagens de erro aos campos dos formulários
+            add_form_errors_to_messages(request, user_form)
+            add_form_errors_to_messages(request, perfil_form)
+
+
             # Verifica os erros individualmente para cada campo do formulario
-            for field, error_list in user_form.errors.items():
-                for error in error_list:
-                    messages.error(request, f'Erro no campo "{user_form[field].label}": {error}')
-            for field, error_list in perfil_form.errors.items():
-                for error in error_list:
-                    messages.error(request, f'Erro no campo "{perfil_form[field].label}": {error}')
+            #for field, error_list in user_form.errors.items():
+            #    for error in error_list:
+            #        messages.error(request, f'Erro no campo "{user_form[field].label}": {error}')
+            #for field, error_list in perfil_form.errors.items():
+            #    for error in error_list:
+            #        messages.error(request, f'Erro no campo "{perfil_form[field].label}": {error}')
 
     context = {'user_form': user_form, 'perfil_form': perfil_form}
     return render(request, 'contas/adicionar-usuario.html', context)
