@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 
 from base.utils import add_form_errors_to_messages
@@ -7,13 +7,14 @@ from .import models
 from .forms import PostagemForumForm
 
 
-# Create your views here.
+# Lista de Postagens
 def lista_postagem_forum(request):
     postagens = models.PostagemForum.objects.filter(ativo=True)
     context = {'postagens': postagens}
     return render(request, 'forum/lista-postagem-forum.html', context)
   
 
+# Formulario para Criar Postagens
 def criar_postagem_forum(request):
     form = PostagemForumForm()
     if request.method == 'POST':
@@ -28,3 +29,9 @@ def criar_postagem_forum(request):
         else:
             add_form_errors_to_messages
     return render(request, 'forum/form-postagem-forum.html', {'form': form})
+
+
+# Detalhe Postagem (ID)
+def detalhe_postagem_forum(request, id):
+    postagem = get_object_or_404(models.PostagemForum, id=id)
+    return render(request, 'forum/detalhe-postagem-forum.html', {'postagem': postagem})
