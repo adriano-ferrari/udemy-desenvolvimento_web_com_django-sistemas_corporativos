@@ -19,6 +19,8 @@ def criar_postagem_forum(request):
     if request.method == 'POST':
         form = PostagemForumForm(request.POST, request.FILES)
         if form.is_valid():
+            forum = form.save(commit=False)
+            forum.usuario = request.user
             form.save()
             # Redirecionar para uma página de sucesso ou fazer qualquer outra ação desejada
             messages.success(request, 'O seu Post foi cadastrado com sucesso!')
