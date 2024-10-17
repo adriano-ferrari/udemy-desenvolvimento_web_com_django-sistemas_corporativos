@@ -49,7 +49,7 @@ def editar_postagem_forum(request, id):
 						or request.user.is_superuser):
             
             messages.warning(request, 'O seu usuario nao tem permissao para acessar esta pagina!')
-# Redireciona para uma página de erro ou outra página adequada
+            # Redireciona para uma página de erro ou outra página adequada
             return redirect('lista-postagem-forum')  
     
     if request.method == 'POST':
@@ -64,3 +64,16 @@ def editar_postagem_forum(request, id):
     else:
         form = PostagemForumForm(instance=postagem)
     return render(request, 'forum/form-postagem-forum.html', {'form': form})
+
+
+# Deletar Postagem (ID)
+@login_required 
+def deletar_postagem_forum(request, id): 
+    postagem = get_object_or_404(models.PostagemForum, id=id)
+    print(postagem)
+    if request.method == 'POST':
+        postagem.delete()
+        messages.error(request, 'O seu Post: '+ postagem.titulo +'. Foi deletado com sucesso!')
+        return redirect('lista-postagem-forum')
+    return render(request, 'forum/detalhe-postagem-forum.html', 
+                  {'postagem': postagem})
