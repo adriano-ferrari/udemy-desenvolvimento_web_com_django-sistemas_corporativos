@@ -6,4 +6,4 @@ def index(request):
     #context = {
     #    'mensagem': messages.success(request, 'Esta é uma mensagem de sucesso!')
     #}
-    return render(request, 'pages/index.html')
+    return render(request, 'index.html')

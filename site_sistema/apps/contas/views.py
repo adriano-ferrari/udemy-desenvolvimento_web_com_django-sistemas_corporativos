@@ -20,7 +20,7 @@ from .permissions import grupo_colaborador_required
 
 # Rota Timeout (desconecta por inatividade)
 def timeout_view(request):
-    return render(request, 'contas/timeout.html')
+    return render(request, 'timeout.html')
 
 
 # Logout
@@ -45,7 +45,7 @@ def force_password_change_view(request):
     else:
         form = PasswordChangeForm(request.user)
     context = {'form': form}
-    return render(request, 'contas/registration/password_force_change_form.html', context)
+    return render(request, 'registration/password_force_change_form.html', context)
 
 
 # Login
@@ -73,7 +73,7 @@ def login_view(request):
                            Se o erro persistir, entre em contato com o administrador do sistema')
     if request.user.is_authenticated:
         return redirect('home')
-    return render(request, 'contas/login.html')
+    return render(request, 'login.html')
 
 
 # Registrar
@@ -113,7 +113,7 @@ def register_view(request):
             #    1 caractere especial e no minimo 8 caracteres.')
             add_form_errors_to_messages(request, form)            
     form = CustomUserCreationForm(user=request.user)
-    return render(request, "contas/register.html", {"form": form})
+    return render(request, "register.html", {"form": form})
 
 
 @login_required()
@@ -128,7 +128,7 @@ def atualizar_meu_usuario(request):
             add_form_errors_to_messages(request, form)
     else:
        form = UserChangeForm(instance=request.user, user=request.user)
-    return render(request, 'contas/user_update.html', {'form': form})
+    return render(request, 'user_update.html', {'form': form})
 
 
 login_required()
@@ -162,14 +162,14 @@ def atualizar_usuario(request, username):
            add_form_errors_to_messages(request, form)
    else:
        form = UserChangeForm(instance=user, user=request.user)
-   return render(request, 'contas/user_update.html', {'form': form})
+   return render(request, 'user_update.html', {'form': form})
 
 
 @login_required
 @grupo_colaborador_required(['administrador','colaborador'])
 def lista_usuarios(request): # Lista Cliente 
     lista_usuarios = MyUser.objects.select_related('perfil').filter(is_superuser=False) 
-    return render(request, 'contas/lista-usuarios.html', {'lista_usuarios': lista_usuarios})
+    return render(request, 'lista-usuarios.html', {'lista_usuarios': lista_usuarios})
 
 
 @login_required
@@ -211,4 +211,4 @@ def adicionar_usuario(request):
             #        messages.error(request, f'Erro no campo "{perfil_form[field].label}": {error}')
 
     context = {'user_form': user_form, 'perfil_form': perfil_form}
-    return render(request, 'contas/adicionar-usuario.html', context)
+    return render(request, 'adicionar-usuario.html', context)

@@ -15,4 +15,4 @@ def perfil_view(request, username):
         form = PostagemForumForm(instance=el) 
         form_dict[el] = form
 
-    return render(request, 'perfil/perfil.html', {'obj': perfil,'form_dict':form_dict})
+    return render(request, 'perfil.html', {'obj': perfil,'form_dict':form_dict})

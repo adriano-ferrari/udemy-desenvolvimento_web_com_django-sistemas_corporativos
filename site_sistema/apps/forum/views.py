@@ -13,7 +13,7 @@ from .forms import PostagemForumForm
 def lista_postagem_forum(request):
     postagens = models.PostagemForum.objects.filter(ativo=True)
     context = {'postagens': postagens}
-    return render(request, 'forum/lista-postagem-forum.html', context)
+    return render(request, 'lista-postagem-forum.html', context)
   
 
 # Formulario para Criar Postagens
@@ -30,7 +30,7 @@ def criar_postagem_forum(request):
             return redirect('lista-postagem-forum')
         else:
             add_form_errors_to_messages
-    return render(request, 'forum/form-postagem-forum.html', {'form': form})
+    return render(request, 'form-postagem-forum.html', {'form': form})
 
 
 # Detalhe Postagem (ID)
@@ -38,7 +38,7 @@ def detalhe_postagem_forum(request, id):
     postagem = get_object_or_404(models.PostagemForum, id=id)
     form = PostagemForumForm(instance=postagem)
     context = {'form': form, 'postagem': postagem}
-    return render(request, 'forum/detalhe-postagem-forum.html', context)
+    return render(request, 'detalhe-postagem-forum.html', context)
 
 
 # Editar Postagem (ID)
@@ -77,19 +77,19 @@ def deletar_postagem_forum(request, id):
         postagem.delete()
         messages.error(request, 'O seu Post: '+ postagem.titulo +'. Foi deletado com sucesso!')
         return redirect('lista-postagem-forum')
-    return render(request, 'forum/detalhe-postagem-forum.html', 
+    return render(request, 'detalhe-postagem-forum.html', 
                   {'postagem': postagem})
 
 
 def lista_postagem_forum(request):
     if request.path == '/forum/': # Pagina forum da home, mostrar tudo ativo.
         postagens = models.PostagemForum.objects.filter(ativo=True)
-        template_view = 'forum/lista-postagem-forum.html' # lista de post da rota /forum/
+        template_view = 'lista-postagem-forum.html' # lista de post da rota /forum/
     else: # Essa parte mostra no Dashboard
         user = request.user
         lista_grupos = ['administrador', 'colaborador']
         print(user.groups.all()[0])
-        template_view = 'forum/dashboard/dash-lista-postagem-forum.html' # template novo que vamos criar 
+        template_view = 'dashboard/dash-lista-postagem-forum.html' # template novo que vamos criar 
         if any(grupo.name in lista_grupos for grupo in user.groups.all()) or user.is_superuser:
             # Usuário é administrador ou colaborador, pode ver todas as postagens
             postagens = models.PostagemForum.objects.all()
