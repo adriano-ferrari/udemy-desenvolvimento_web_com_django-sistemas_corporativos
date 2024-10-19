@@ -82,13 +82,14 @@ def deletar_postagem_forum(request, id):
 def lista_postagem_forum(request):
     if request.path == '/forum/': # Pagina forum da home, mostrar tudo ativo.
         postagens = models.PostagemForum.objects.filter(ativo=True)
-        template_view = 'lista-postagem-forum.html' # lista de post da rota /forum/
+        template_view = 'forum/lista-postagem-forum.html' # lista de post da rota /forum/
     else: # Essa parte mostra no Dashboard
-        user = request.user 
+        user = request.user
+        lista_grupos = ['administrador', 'colaborador']
         template_view = 'forum/dashboard/dash-lista-postagem-forum.html' # template novo que vamos criar 
-        if ['administrador', 'colaborador'] in user.groups.all() or user.is_superuser:
+        if any(grupo.name in lista_grupos for grupo in user.groups.all()) or user.is_superuser ['administrador', 'colaborador'] in user.groups.all() or user.is_superuser:
             # Usuário é administrador ou colaborador, pode ver todas as postagens
-            postagens = models.PostagemForum.objects.filter(ativo=True)
+            postagens = models.PostagemForum.objects.all()
         else:
             # Usuário é do grupo usuário, pode ver apenas suas próprias postagens
             postagens = models.PostagemForum.objects.filter(usuario=user)
