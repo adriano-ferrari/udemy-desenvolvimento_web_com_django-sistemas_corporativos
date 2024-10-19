@@ -86,8 +86,9 @@ def lista_postagem_forum(request):
     else: # Essa parte mostra no Dashboard
         user = request.user
         lista_grupos = ['administrador', 'colaborador']
+        print(user.groups.all()[0])
         template_view = 'forum/dashboard/dash-lista-postagem-forum.html' # template novo que vamos criar 
-        if any(grupo.name in lista_grupos for grupo in user.groups.all()) or user.is_superuser ['administrador', 'colaborador'] in user.groups.all() or user.is_superuser:
+        if any(grupo.name in lista_grupos for grupo in user.groups.all()) or user.is_superuser:
             # Usuário é administrador ou colaborador, pode ver todas as postagens
             postagens = models.PostagemForum.objects.all()
         else:
