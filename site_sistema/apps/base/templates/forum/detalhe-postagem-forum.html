@@ -11,7 +11,7 @@
                     <span>{{ postagem.data_publicacao }}</span><br> 
                     <div class="div">
                         {% if postagem.usuario == request.user %}
-                            <a class="btn btn-warning" href="{% url 'editar-postagem-forum' postagem.id %}">
+                            <a class="btn btn-warning" data-bs-toggle="modal" href="#editarPostagemModal{{postagem.id}}" role="button">
                                 <i class="fas fa-edit"></i>
                             </a>  
                             <a class="btn btn-danger" data-bs-toggle="modal" 
@@ -33,5 +33,6 @@
         </div>
     </div>
 </div>
+{% include "forum/modal-form-postagem-forum.html" %}
 {% include "forum/modal-deletar-postagem-forum.html" %}
 {% endblock %}

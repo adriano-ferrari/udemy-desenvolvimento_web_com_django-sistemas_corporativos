@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -35,7 +36,9 @@ def criar_postagem_forum(request):
 # Detalhe Postagem (ID)
 def detalhe_postagem_forum(request, id):
     postagem = get_object_or_404(models.PostagemForum, id=id)
-    return render(request, 'forum/detalhe-postagem-forum.html', {'postagem': postagem})
+    form = PostagemForumForm(instance=postagem)
+    context = {'form': form, 'postagem': postagem}
+    return render(request, 'forum/detalhe-postagem-forum.html', context)
 
 
 # Editar Postagem (ID)
@@ -61,9 +64,8 @@ def editar_postagem_forum(request, id):
             return redirect('editar-postagem-forum', id=postagem.id)
         else:
             add_form_errors_to_messages(request, form)
-    else:
-        form = PostagemForumForm(instance=postagem)
-    return render(request, 'forum/form-postagem-forum.html', {'form': form})
+    
+    return JsonResponse({'status': 'Ok'}) # Coloca por enquanto.
 
 
 # Deletar Postagem (ID)
