@@ -91,10 +91,9 @@ def editar_postagem_forum(request, id):
 @login_required 
 def deletar_postagem_forum(request, id):  
     redirect_route = request.POST.get('redirect_route', '')
-    print(redirect_route)
     postagem = get_object_or_404(models.PostagemForum, id=id)
-    message = 'O seu Post: '+ postagem.titulo +', foi deletado com sucesso!'
-    print(postagem)
+    message = 'O seu Post: '+ postagem.titulo +', foi deletado com sucesso!'    
+    
     if request.method == 'POST':
         postagem.delete()
         messages.info(request, message)
