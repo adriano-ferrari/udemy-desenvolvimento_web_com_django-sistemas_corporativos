@@ -3,7 +3,8 @@
 
 {% block title %}Perfil{% endblock title %}  
 
-{% block content %} 
+{% block content %}
+{{ request.path }}
 <div class="container mt-3">
     <div class="d-flex flex-wrap gap-5 justify-content-center align-items-center">
         <div class="d-flex flex-column">
@@ -42,7 +43,7 @@
             <div class="col-md-8">
 
                 <!-- Coloca a lista de produtos aqui -->
-                {% for postagem, form in form_dict.items %} # agora é dicionario então coloca .items e form para cada objeto que aparecer no loop.
+                {% for postagem, form in form_dict.items %} <!-- agora é dicionario então coloca .items e form para cada objeto que aparecer no loop. -->
                 <div class="p-3 mb-3 rounded-3 shadow-sm">
                     <div class="align-items-center">
                         <div class="d-flex justify-content-between">
@@ -66,7 +67,7 @@
                         </div>
                     </div>
                 </div> 
-                {% include "modal-form-postagem-forum.html" %} # Adiciona formulario do modal
+                {% include "modal-form-postagem-forum.html" %}
                 {% include "modal-deletar-postagem-forum.html" %}
                 {% endfor %}            
             </div>
@@ -75,3 +76,4 @@
     
 </div>
 {% endblock %}
+
