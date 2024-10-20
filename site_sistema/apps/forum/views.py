@@ -35,19 +35,28 @@ def lista_postagem_forum(request):
     context = {'postagens': postagens,'form_dict': form_dict}
     
     return render(request, template_view, context)
-  
+
+
 # Formulario para Criar Postagens
 def criar_postagem_forum(request):
     form = PostagemForumForm()
     if request.method == 'POST':
         form = PostagemForumForm(request.POST, request.FILES)
         if form.is_valid():
-            forum = form.save(commit=False)
-            forum.usuario = request.user
-            form.save()
-            # Redirecionar para uma página de sucesso ou fazer qualquer outra ação desejada
-            messages.success(request, 'O seu Post foi cadastrado com sucesso!')
-            return redirect('lista-postagem-forum')
+            postagem_imagens = request.FILES.getlist('postagem_imagens') # pega as imagens
+            if len(postagem_imagens) > 5: # faz um count
+                messages.error(request, 'Você pode adicionar no máximo 5 imagens.')
+            else:
+                forum = form.save(commit=False)
+                forum.usuario = request.user
+                form.save()
+                
+                for f in postagem_imagens:
+                    models.PostagemForumImagem.objects.create(postagem=forum, imagem=f)
+
+                # Redirecionar para uma página de sucesso ou fazer qualquer outra ação desejada
+                messages.success(request, 'O seu Post foi cadastrado com sucesso!')
+                return redirect('lista-postagem-forum')
         else:
             add_form_errors_to_messages
     return render(request, 'form-postagem-forum.html', {'form': form})
@@ -59,6 +68,7 @@ def detalhe_postagem_forum(request, id):
     form = PostagemForumForm(instance=postagem)
     context = {'form': form, 'postagem': postagem}
     return render(request, 'detalhe-postagem-forum.html', context)
+
 
 # Editar Postagem (ID)
 @login_required
@@ -87,9 +97,10 @@ def editar_postagem_forum(request, id):
     
     return JsonResponse({'status': message}) # Coloca por enquanto.
 
+
 # Deletar Postagem (ID)
 @login_required 
-def deletar_postagem_forum(request, id):  
+def deletar_postagem_forum(request, id):
     redirect_route = request.POST.get('redirect_route', '')
     postagem = get_object_or_404(models.PostagemForum, id=id)
     message = 'O seu Post: '+ postagem.titulo +', foi deletado com sucesso!'    
