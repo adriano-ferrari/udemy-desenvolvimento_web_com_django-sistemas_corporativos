@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-
+from django.core.paginator import Paginator
 from base.utils import add_form_errors_to_messages
 
 from .import models
@@ -30,10 +30,22 @@ def lista_postagem_forum(request):
     form_dict = {}
     for el in postagens:
         form = PostagemForumForm(instance=el)
-        form_dict[el] = form
+        form_dict[el] = form 
+        
+    # Criar uma lista de tuplas (postagem, form) a partir do form_dict
+    form_list = [(postagem, form) for postagem, form in form_dict.items()]
+    
+    # Aplicar a paginação à lista de tuplas
+    paginacao = Paginator(form_list, 3) # '3' é numero de registro por pagina
+    
+    # Obter o número da página a partir dos parâmetros da URL
+    pagina_numero = request.GET.get("page")
+    page_obj = paginacao.get_page(pagina_numero)
+    
+    # Criar um novo dicionário form_dict com base na página atual
+    form_dict = {postagem: form for postagem, form in page_obj}
     
     context = {'postagens': postagens,'form_dict': form_dict}
-    
     return render(request, template_view, context)
 
 
@@ -96,7 +108,7 @@ def editar_postagem_forum(request, id):
             else: 
                 form.save()
                 for f in postagem_imagens: # for para pegar as imagens e salvar.
-                    models.PostagemForumImagem.objects.create(postagem=form, imagem=f)
+                    models.PostagemForumImagem.objects.create(postagem=postagem, imagem=f)
                     
                 messages.success(request, message)
                 return redirect(redirect_route)
@@ -133,3 +145,4 @@ def remover_imagem(request):
         postagem_imagem.imagem.delete()
         postagem_imagem.delete()
     return JsonResponse({'message': 'Imagem removida com sucesso!'})
+
