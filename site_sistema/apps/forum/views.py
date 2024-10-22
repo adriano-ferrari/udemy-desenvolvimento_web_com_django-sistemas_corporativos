@@ -4,7 +4,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from base.utils import add_form_errors_to_messages
+
+from base.utils import add_form_errors_to_messages, filtrar_modelo
 
 from .import models
 from .forms import PostagemForumForm
@@ -12,20 +13,31 @@ from .forms import PostagemForumForm
 
 # Lista de Postagens
 def lista_postagem_forum(request):
+    form_dict = {}
+    filtros = {}
+
+    valor_busca = request.GET.get("titulo")
+    if valor_busca:
+        filtros["titulo"] = valor_busca
+
     if request.path == '/forum/': # Pagina forum da home, mostrar tudo ativo.
         postagens = models.PostagemForum.objects.filter(ativo=True)
         template_view = 'lista-postagem-forum.html' # lista de post da rota /forum/
     else: # Essa parte mostra no Dashboard
         user = request.user
         lista_grupos = ['administrador', 'colaborador']
-        print(user.groups.all()[0])
         template_view = 'dashboard/dash-lista-postagem-forum.html' # template novo que vamos criar 
+        
         if any(grupo.name in lista_grupos for grupo in user.groups.all()) or user.is_superuser:
             # Usuário é administrador ou colaborador, pode ver todas as postagens
             postagens = models.PostagemForum.objects.all()
         else:
             # Usuário é do grupo usuário, pode ver apenas suas próprias postagens
             postagens = models.PostagemForum.objects.filter(usuario=user)
+
+    
+    postagens = filtrar_modelo(models.PostagemForum, **filtros)
+
     # Como existe uma lista de objetos, para aparecer o formulário correspondente no modal precisamos ter um for
     form_dict = {}
     for el in postagens:
@@ -112,6 +124,7 @@ def editar_postagem_forum(request, id):
                     
                 messages.success(request, message)
                 return redirect(redirect_route)
+            
         else:
             add_form_errors_to_messages(request, form)
     
