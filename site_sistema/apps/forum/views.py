@@ -45,7 +45,7 @@ def lista_postagem_forum(request):
     # Criar um novo dicionário form_dict com base na página atual
     form_dict = {postagem: form for postagem, form in page_obj}
     
-    context = {'postagens': postagens,'form_dict': form_dict}
+    context = {'page_obj': page_obj, 'form_dict': form_dict}
     return render(request, template_view, context)
 
 
@@ -145,4 +145,3 @@ def remover_imagem(request):
         postagem_imagem.imagem.delete()
         postagem_imagem.delete()
     return JsonResponse({'message': 'Imagem removida com sucesso!'})
-
