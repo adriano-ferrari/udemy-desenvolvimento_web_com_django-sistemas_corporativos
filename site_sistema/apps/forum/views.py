@@ -18,7 +18,8 @@ def lista_postagem_forum(request):
 
     valor_busca = request.GET.get("titulo")
     if valor_busca:
-        filtros["titulo"] = valor_busca
+        filtros['titulo'] = valor_busca
+        filtros['descricao'] = valor_busca
 
     if request.path == '/forum/': # Pagina forum da home, mostrar tudo ativo.
         postagens = models.PostagemForum.objects.filter(ativo=True)
@@ -158,3 +159,4 @@ def remover_imagem(request):
         postagem_imagem.imagem.delete()
         postagem_imagem.delete()
     return JsonResponse({'message': 'Imagem removida com sucesso!'})
+
