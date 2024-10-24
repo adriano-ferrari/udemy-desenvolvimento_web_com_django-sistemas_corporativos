@@ -1,6 +1,6 @@
 from django import forms
 from django.conf import settings
-from .models import PostagemForum
+from .models import PostagemForum, PostagemForumComentario
 
 
 class PostagemForumForm(forms.ModelForm):
@@ -47,3 +47,13 @@ class PostagemForumForm(forms.ModelForm):
     class Meta:
         model = PostagemForum
         fields = ['titulo', 'descricao', 'data_publicacao', 'ativo'] # remove anexar imagem
+
+
+class PostagemForumComentarioForm(forms.ModelForm):
+    class Meta:
+        model = PostagemForumComentario
+        fields = ['comentario']
+        widgets = {
+            'comentario': forms.Textarea(
+                attrs={'class': 'form-control', 'rows': 3})
+        }

@@ -8,7 +8,7 @@ from django.core.paginator import Paginator
 from base.utils import add_form_errors_to_messages, filtrar_modelo
 
 from .import models
-from .forms import PostagemForumForm
+from .forms import PostagemForumComentarioForm, PostagemForumForm
 
 
 # Lista de Postagens
@@ -91,7 +91,10 @@ def criar_postagem_forum(request):
 def detalhe_postagem_forum(request, slug):
     postagem = get_object_or_404(models.PostagemForum, slug=slug)
     form = PostagemForumForm(instance=postagem)
-    context = {'form': form, 'postagem': postagem}
+    form_comentario = PostagemForumComentarioForm()
+    context = {'form': form, 
+               'postagem': postagem,
+               'form_comentario':form_comentario}
     return render(request, 'detalhe-postagem-forum.html', context)
 
 
@@ -160,3 +163,18 @@ def remover_imagem(request):
         postagem_imagem.delete()
     return JsonResponse({'message': 'Imagem removida com sucesso!'})
 
+
+def adicionar_comentario(request, slug):
+    postagem = get_object_or_404(models.PostagemForum, slug=slug)
+    message = 'Comentário Adcionado com sucesso!'
+    if request.method == 'POST':
+        form = PostagemForumComentarioForm(request.POST)
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.usuario = request.user
+            comentario.postagem = postagem
+            comentario.save() 
+            messages.warning(request, message)
+            return redirect('detalhe-postagem-forum', slug=postagem.slug)
+        message = 'ERROR'
+    return JsonResponse({'status': message})

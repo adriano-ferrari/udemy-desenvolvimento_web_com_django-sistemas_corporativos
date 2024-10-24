@@ -12,5 +12,8 @@ urlpatterns = [
     
     # AJAX
     path('remover-imagem/', views.remover_imagem, name='remover-imagem'),
+
+    # Comentários
+    path('adicionar-comentario/<str:slug>/', views.adicionar_comentario, name='adicionar-comentario'),
 ]
 
