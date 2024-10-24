@@ -1,11 +1,9 @@
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-
 from base.utils import filtrar_modelo
 from contas.models import MyUser
 from forum.forms import PostagemForumForm
-
 
 login_required()
 def perfil_view(request, username):
@@ -13,7 +11,6 @@ def perfil_view(request, username):
     perfil = get_object_or_404(fitro, username=username)
     
     perfil_postagens = perfil.user_postagem_forum.all() # Todas as postagens relacionadas com perfil
-    form_dict = {}
     filtros = {} # Filtro dict
 
     valor_busca = request.GET.get("titulo") # Pego parametro
@@ -21,8 +18,8 @@ def perfil_view(request, username):
         filtros["titulo"] = valor_busca # Adiciono no dicionario
         filtros["descricao"] = valor_busca
         
-    # Utiliza o modelo das postagens do perfil
-    perfil_postagens = filtrar_modelo(perfil_postagens.model, **filtros) # Faz o filtro
+        # Utiliza o modelo das postagens do perfil
+        perfil_postagens = filtrar_modelo(perfil_postagens, **filtros) # Faz o filtro
 
     form_dict = {}
     for el in perfil_postagens:
@@ -44,3 +41,4 @@ def perfil_view(request, username):
     context = {'obj': perfil, 'page_obj': page_obj, 'form_dict':form_dict}
 
     return render(request, 'perfil.html', context)
+

@@ -37,7 +37,7 @@ def lista_postagem_forum(request):
             postagens = models.PostagemForum.objects.filter(usuario=user)
 
     
-    postagens = filtrar_modelo(models.PostagemForum, **filtros)
+    postagens = filtrar_modelo(postagens, **filtros)
 
     # Como existe uma lista de objetos, para aparecer o formulário correspondente no modal precisamos ter um for
     form_dict = {}

@@ -17,8 +17,7 @@ def add_form_errors_to_messages(request, form):
 
 
 # Filtro (OR)
-def filtrar_modelo(modelo, **filtros):
-    queryset = modelo.objects.all()
+def filtrar_modelo(queryset, **filtros):
 
     q_obj = Q()  # Inicializa um objeto Q vazio
 
