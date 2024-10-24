@@ -87,19 +87,19 @@ def criar_postagem_forum(request):
     return render(request, 'form-postagem-forum.html', {'form': form})
 
 
-# Detalhe Postagem (ID)
-def detalhe_postagem_forum(request, id):
-    postagem = get_object_or_404(models.PostagemForum, id=id)
+# Detalhe Postagem (slug)
+def detalhe_postagem_forum(request, slug):
+    postagem = get_object_or_404(models.PostagemForum, slug=slug)
     form = PostagemForumForm(instance=postagem)
     context = {'form': form, 'postagem': postagem}
     return render(request, 'detalhe-postagem-forum.html', context)
 
 
-# Editar Postagem (ID)
+# Editar Postagem (slug)
 @login_required
-def editar_postagem_forum(request, id):
+def editar_postagem_forum(request, slug):
     redirect_route = request.POST.get('redirect_route', '')
-    postagem = get_object_or_404(models.PostagemForum, id=id)
+    postagem = get_object_or_404(models.PostagemForum, slug=slug)
     message = 'O seu Post: '+ postagem.titulo +', foi atualizado com sucesso!'
     # Verifica se o usuário autenticado é o autor da postagem
     lista_grupos = ['administrador', 'colaborador']
@@ -132,11 +132,11 @@ def editar_postagem_forum(request, id):
     return JsonResponse({'status': message}) # Coloca por enquanto.
 
 
-# Deletar Postagem (ID)
+# Deletar Postagem (slug)
 @login_required 
-def deletar_postagem_forum(request, id):
+def deletar_postagem_forum(request, slug):
     redirect_route = request.POST.get('redirect_route', '')
-    postagem = get_object_or_404(models.PostagemForum, id=id)
+    postagem = get_object_or_404(models.PostagemForum, slug=slug)
     message = 'O seu Post: '+ postagem.titulo +', foi deletado com sucesso!'    
     
     if request.method == 'POST':
