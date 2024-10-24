@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import PostagemForum, PostagemForumImagem
+from .models import PostagemForum, PostagemForumImagem, PostagemForumComentario
 
 class PostagemForumImagemInline(admin.TabularInline):
     model = PostagemForumImagem
@@ -15,5 +15,5 @@ class PostagemForumAdmin(admin.ModelAdmin):
 # Register your models here.
 admin.site.register(PostagemForum, PostagemForumAdmin)
 #admin.site.register(PostagemForumImagem)
-
+admin.site.register(PostagemForumComentario)
 
