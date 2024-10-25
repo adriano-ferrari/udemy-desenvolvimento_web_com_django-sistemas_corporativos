@@ -34,6 +34,8 @@ urlpatterns = [
          views.editar_comentario, 
          name='editar-comentario'),
     path('deletar-comentario/<int:comentario_id>/', 
-		views.deletar_comentario, name='deletar-comentario')
+		views.deletar_comentario, name='deletar-comentario'),
+    path('responder-comentario/<int:comentario_id>/', 
+			views.responder_comentario, name='responder-comentario'),
 ]
 
