@@ -33,5 +33,7 @@ urlpatterns = [
     path('editar-comentario/<int:comentario_id>/', 
          views.editar_comentario, 
          name='editar-comentario'),
+    path('deletar-comentario/<int:comentario_id>/', 
+		views.deletar_comentario, name='deletar-comentario')
 ]
 
