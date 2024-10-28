@@ -32,13 +32,18 @@ class Conteudo(models.Model):
     nome = models.CharField(max_length=100, null=True, blank=True, help_text='Nome do conteúdo para identificar na lista.')
     imagem = models.ImageField(upload_to='paginas/imagem/', null=True, blank=True)
     icone = models.CharField(max_length=100, null=True, blank=True,help_text='Codigo do Icon, Ex: fas fa-user')
+    
     cor_label = models.CharField(max_length=100, null=True, blank=True,help_text='Codigo do RGB, Ex: #FA4343')
+    
     titulo_1 = models.CharField(max_length=100, null=True, blank=True, help_text="Titulo")
     titulo_2 = models.CharField(max_length=200, null=True, blank=True, help_text="Subtitulo")
+    
     descricao_1 = models.CharField(max_length=200, null=True, blank=True, help_text="Descrição mais curta até 200 caracteres")
     descricao_2 = models.TextField(null=True, blank=True, help_text="Descrição mais longa")
+    
     titulo_botao_1 = models.CharField(max_length=50, null=True, blank=True,help_text="Titulo do Botão 1")
     rota_botao_1 = models.CharField(max_length=50, null=True, blank=True,help_text="Nome da Rota que configurou no urls.py")
+    
     titulo_botao_2 = models.CharField(max_length=50, null=True, blank=True,help_text="Titulo do Botão 2")
     rota_botao_2 = models.CharField(max_length=50, null=True, blank=True,help_text="Nome da Rota que configurou no urls.py")
     
