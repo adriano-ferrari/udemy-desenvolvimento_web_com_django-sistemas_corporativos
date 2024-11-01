@@ -17,3 +17,4 @@ def paginas_view(request):
         }
     context = {'blocos': pagina[str(url_name)]}
     return render(request, 'index.html', context)
+
