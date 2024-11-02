@@ -5,4 +5,4 @@ from .models import *
 admin.site.register(Pagina)
 admin.site.register(TipoBloco)
 admin.site.register(Conteudo)
-admin.site.register(Blocos)
+admin.site.register(Bloco)

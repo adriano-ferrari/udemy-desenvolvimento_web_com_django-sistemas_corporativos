@@ -20,7 +20,7 @@ class TipoBloco(models.Model):
                               help_text='Digite o nome do bloco. Ex: SLIDE, BANNER_1...')
     class Meta:
         verbose_name = '1 - Tipo de Bloco'
-        verbose_name_plural = '1 - Tipo de Bloco'
+        verbose_name_plural = '1 - Tipos de Blocos'
         ordering = ['id']
 
     def __str__(self):
@@ -49,7 +49,7 @@ class Conteudo(models.Model):
     
     class Meta:
         verbose_name = '2 - Conteúdo'
-        verbose_name_plural = '2 - Conteúdo'
+        verbose_name_plural = '2 - Conteúdos'
         ordering = ['id']
 
     def __str__(self):
@@ -58,7 +58,7 @@ class Conteudo(models.Model):
 
 
 ## Modelo para criar varios blocos
-class Blocos(models.Model): 
+class Bloco(models.Model): 
     ordem = models.CharField(max_length=3, null=True, help_text="Ordem de exibição do bloco")
     titulo = models.CharField(max_length=100, help_text="Titulo pode ser exibido no template")
     descricao = models.TextField(blank=True, null=True, help_text="Descrição do bloco")

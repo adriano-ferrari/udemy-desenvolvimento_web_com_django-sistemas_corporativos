@@ -1,14 +1,14 @@
-{% if bloco.bloco.nome == 'cards' %}
+{% if bl.bloco.nome == 'cards' %}
   <section>
     <div class="container py-lg-5">
       <div class="row justify-content-center pb-5">
         <div class="col-md-12 text-center">
-          <h2 class="mb-3">{{ bloco.titulo }}</h2>
-          <p>{{ bloco.descricao|default:"" }}</p>
+          <h2 class="mb-3">{{ bl.titulo }}</h2>
+          <p>{{ bl.descricao|default:"" }}</p>
         </div>
       </div>
       <div class="row g-4">
-        {% for card in bloco.conteudo.all %} 
+        {% for card in bl.conteudo.all %} 
           <div class="col-md-6 d-flex align-self-stretch">
             <div class="d-flex gap-4">
               <div class="rounded text-white p-5" style="background-color: {{ card.cor_label }}">
