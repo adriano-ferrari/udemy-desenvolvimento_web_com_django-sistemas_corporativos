@@ -9,14 +9,12 @@ def index(request):
 
 def paginas_view(request):
     url_name = request.resolver_match.url_name
-    print(url_name)
     pagina = {
         'home': Bloco.objects.filter(pagina__nome='inicio',ativo=True).order_by('ordem'),
         'sobre': Bloco.objects.filter(pagina__nome='sobre',ativo=True).order_by('ordem'),
         'faq': Bloco.objects.filter(pagina__nome='faq',ativo=True).order_by('ordem'),
         'contato': Bloco.objects.filter(pagina__nome='contato',ativo=True).order_by('ordem'),
         }
-    print(pagina[str(url_name)])
     context = {'bloco': pagina[str(url_name)]}
     return render(request, 'index.html', context)
 
