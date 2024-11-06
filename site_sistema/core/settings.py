@@ -113,6 +113,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 # Apps
                 'base.context_processors.context_social',
+                'base.context_processors.get_logo',
             ],
         },
     },
