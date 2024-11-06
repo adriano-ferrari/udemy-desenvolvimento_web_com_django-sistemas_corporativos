@@ -114,6 +114,7 @@ TEMPLATES = [
                 # Apps
                 'base.context_processors.context_social',
                 'base.context_processors.get_logo',
+                'base.context_processors.get_seo',
             ],
         },
     },
